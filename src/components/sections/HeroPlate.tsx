@@ -33,7 +33,8 @@ export function HeroPlate() {
     }
 
     // Autoplay can still be refused on a cold load; nudge it once we are here.
-    void video.play().catch(() => undefined);
+    // iOS sometimes scrolls the playing video into view — pin the page at top.
+    void video.play().then(() => window.scrollTo(0, 0)).catch(() => undefined);
   }, [reduced]);
 
   return (

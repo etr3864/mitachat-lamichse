@@ -44,6 +44,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="he" dir="rtl" className={`${miriam.variable} ${plexMono.variable}`}>
       <head>
         <style>{brandVariablesCss}</style>
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "if('scrollRestoration'in history)history.scrollRestoration='manual';window.scrollTo(0,0);",
+          }}
+        />
       </head>
       <body>
         <ScrollReset />

@@ -48,7 +48,7 @@ export function Hero() {
         }}
       />
 
-      <div className="relative flex min-h-[100svh] flex-col items-center justify-start gap-6 px-6 pt-20 pb-10 text-center md:justify-start md:gap-[76px] md:px-10 md:pt-26 md:pb-32">
+      <div className="relative flex min-h-[100svh] flex-col items-center justify-start gap-6 px-6 pt-16 pb-8 text-center md:justify-start md:gap-[76px] md:px-10 md:pt-26 md:pb-32">
         <LogoMark
           strataCount={5}
           className="h-[72px] [&_g:last-child]:hidden md:h-[clamp(120px,27vh,250px)] md:[&_g:last-child]:block"

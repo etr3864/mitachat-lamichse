@@ -39,6 +39,7 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    overflow-anchor: none;
   }
 
   body {
@@ -46,6 +47,7 @@
     color: var(--color-light);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
+    overflow-anchor: none;
   }
 
   /* Latin metadata (episode codes, timestamps) always reads left-to-right */
