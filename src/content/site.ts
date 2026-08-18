@@ -7,14 +7,9 @@ export const site = {
   url: "https://mitachat-lamichse.com",
 } as const;
 
-export const nav = [
-  { label: "השיטה", href: "#method" },
-  { label: "מי אנחנו", href: "#about" },
-] as const;
-
 export const cta = {
   label: "דברו איתנו",
-  href: "#contact",
+  href: "/#contact",
 } as const;
 
 /** Listen chips in the hero. Empty href renders as disabled until the URLs land. */

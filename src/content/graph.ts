@@ -12,6 +12,21 @@ export type GraphNode = {
 
 export const GRAPH_VIEWBOX = { width: 1210, height: 420 } as const;
 
+/** Portrait schematic: the left-to-right story turns into a top-to-bottom walk. */
+export const GRAPH_VIEWBOX_MOBILE = { width: 400, height: 1120 } as const;
+
+export const GRAPH_WIDE = 768;
+
+export function graphPoint(node: GraphNode, mobile: boolean) {
+  if (!mobile) return { x: node.x, y: node.y };
+  const padX = 36;
+  const padY = 64;
+  return {
+    x: padX + (node.y / GRAPH_VIEWBOX.height) * (GRAPH_VIEWBOX_MOBILE.width - padX * 2),
+    y: padY + (node.x / GRAPH_VIEWBOX.width) * (GRAPH_VIEWBOX_MOBILE.height - padY * 2),
+  };
+}
+
 export const graphNodes: GraphNode[] = [
   { label: "מודל בסיס", x: 120, y: 210, weight: "hub" },
   { label: "נתוני אימון", x: 250, y: 96, weight: "node" },

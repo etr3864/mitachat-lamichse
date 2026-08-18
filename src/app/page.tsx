@@ -1,5 +1,4 @@
-import { SiteFooter } from "@/components/layout/SiteFooter";
-import { SiteHeader } from "@/components/layout/SiteHeader";
+import { PageFrame } from "@/components/layout/PageFrame";
 import { About } from "@/components/sections/About";
 import { Contact } from "@/components/sections/Contact";
 import { Hero } from "@/components/sections/Hero";
@@ -9,8 +8,7 @@ import { MethodStage } from "@/components/sections/method/MethodStage";
 
 export default function HomePage() {
   return (
-    <>
-      <SiteHeader />
+    <PageFrame>
       <main>
         <Hero />
         <HoodSeam />
@@ -19,7 +17,6 @@ export default function HomePage() {
         <About />
         <Contact />
       </main>
-      <SiteFooter />
-    </>
+    </PageFrame>
   );
 }

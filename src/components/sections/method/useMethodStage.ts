@@ -107,11 +107,6 @@ export function useMethodStage(stage: RefObject<HTMLElement | null>, enabled = t
 
     const bar = map.bar;
     if (bar) bar.style.width = `${(p * 100).toFixed(2)}%`;
-
-    const readout = map.readout;
-    if (readout) {
-      readout.textContent = `DEPTH ${String(Math.round(p * 100)).padStart(3, "0")}%`;
-    }
   }, enabled);
 
   return setNode;

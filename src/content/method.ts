@@ -47,5 +47,4 @@ export const methodLayers: MethodLayer[] = [
 export const methodIntro = {
   code: "01",
   heading: "השיטה",
-  label: "SCROLL — DISASSEMBLE / FIVE LAYERS DOWN",
 } as const;

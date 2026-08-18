@@ -62,15 +62,6 @@ export function MethodStage() {
           />
         ))}
 
-        <div className="absolute inset-x-6 bottom-8 flex items-center justify-between gap-6 md:inset-x-10">
-          <MonoLabel tone="faint" size="xs" className="hidden sm:inline">
-            {methodIntro.label}
-          </MonoLabel>
-          <MonoLabel tone="faint" size="xs">
-            <span ref={setNode("readout")}>DEPTH 000%</span>
-          </MonoLabel>
-        </div>
-
         <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-0.5 bg-edge">
           <div ref={setNode("bar")} className="h-0.5 w-0 bg-amber" />
         </div>

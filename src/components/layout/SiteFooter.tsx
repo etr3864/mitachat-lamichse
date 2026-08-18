@@ -1,6 +1,7 @@
 import { LogoMark } from "@/components/brand/LogoMark";
 import { MonoLabel } from "@/components/brand/MonoLabel";
 import { SocialMark } from "@/components/brand/SocialMark";
+import { legalNav } from "@/content/legal";
 import { site, socials, type SocialId } from "@/content/site";
 
 const listen = socials.filter((item) => item.kind === "listen");
@@ -32,6 +33,18 @@ export function SiteFooter() {
           <SocialGroup code="LISTEN" heading="האזינו ב" items={listen} named />
           <SocialGroup code="FOLLOW" heading="עקבו ב" items={follow} />
         </div>
+
+        <nav aria-label="מסמכים משפטיים" className="border-t border-edge pt-6">
+          <ul className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-faint">
+            {legalNav.map((item) => (
+              <li key={item.slug}>
+                <a href={item.href} className="transition-colors hover:text-muted">
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
       </div>
     </footer>
   );

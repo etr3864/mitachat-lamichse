@@ -1,27 +1,52 @@
 "use client";
 
-import { useRef } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { MonoLabel } from "@/components/brand/MonoLabel";
-import { GRAPH_VIEWBOX, graphNodes, nodeGeometry } from "@/content/graph";
+import {
+  GRAPH_VIEWBOX,
+  GRAPH_VIEWBOX_MOBILE,
+  GRAPH_WIDE,
+  graphNodes,
+  graphPoint,
+  nodeGeometry,
+} from "@/content/graph";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
-import { graphEdgePaths } from "./graph-paths";
+import { graphEdgePaths, graphEdgePathsMobile } from "./graph-paths";
 import { useKnowledgeGraph } from "./useKnowledgeGraph";
 
+function useWideLayout() {
+  const [wide, setWide] = useState(false);
+
+  useLayoutEffect(() => {
+    const media = window.matchMedia(`(min-width: ${GRAPH_WIDE}px)`);
+    const sync = () => setWide(media.matches);
+    sync();
+    media.addEventListener("change", sync);
+    return () => media.removeEventListener("change", sync);
+  }, []);
+
+  return wide;
+}
+
 /**
- * The vocabulary of the show as a schematic. On desktop it teaches itself:
- * dim the rest, name the links, and walk a hub until the pointer takes over.
+ * The vocabulary of the show as a schematic. Desktop teaches with hover.
+ * Mobile turns the map on its side and fills it as you walk down the page.
  */
 export function KnowledgeGraph() {
   const container = useRef<HTMLDivElement | null>(null);
   const scene = useRef<SVGSVGElement | null>(null);
   const reduced = useReducedMotion();
+  const wide = useWideLayout();
+  const mobile = !wide;
+  const box = mobile ? GRAPH_VIEWBOX_MOBILE : GRAPH_VIEWBOX;
+  const paths = mobile ? graphEdgePathsMobile : graphEdgePaths;
 
-  useKnowledgeGraph(container, scene, !reduced);
+  useKnowledgeGraph(container, scene, !reduced, wide);
 
   return (
     <div
       ref={container}
-      className="relative h-[400px] overflow-hidden md:h-[560px] md:cursor-pointer"
+      className="relative h-[1240px] overflow-hidden md:h-[560px] md:cursor-pointer"
     >
       <div
         aria-hidden="true"
@@ -33,14 +58,18 @@ export function KnowledgeGraph() {
 
       <svg
         ref={scene}
-        viewBox={`-72 -64 ${GRAPH_VIEWBOX.width + 144} ${GRAPH_VIEWBOX.height + 128}`}
+        viewBox={
+          mobile
+            ? `-16 -24 ${box.width + 32} ${box.height + 48}`
+            : `-72 -64 ${box.width + 144} ${box.height + 128}`
+        }
         fill="none"
-        preserveAspectRatio="xMidYMid meet"
+        preserveAspectRatio={mobile ? "xMidYMin meet" : "xMidYMid meet"}
         aria-hidden="true"
-        className="absolute inset-x-4 inset-y-10 block size-full md:inset-x-12 md:inset-y-14"
+        className="absolute inset-x-3 top-14 bottom-6 block size-full md:inset-x-12 md:inset-y-14"
       >
         <g>
-          {graphEdgePaths.map((edge, index) => (
+          {paths.map((edge, index) => (
             <path
               key={index}
               data-edge
@@ -59,6 +88,7 @@ export function KnowledgeGraph() {
         <g>
           {graphNodes.map((node, index) => {
             const geometry = nodeGeometry[node.weight];
+            const point = graphPoint(node, mobile);
             return (
               <g
                 key={node.label}
@@ -68,8 +98,8 @@ export function KnowledgeGraph() {
               >
                 <circle
                   data-halo
-                  cx={node.x}
-                  cy={node.y}
+                  cx={point.x}
+                  cy={point.y}
                   r={17}
                   fill="none"
                   stroke="var(--color-amber)"
@@ -78,22 +108,22 @@ export function KnowledgeGraph() {
                 />
                 <circle
                   data-dot
-                  cx={node.x}
-                  cy={node.y}
+                  cx={point.x}
+                  cy={point.y}
                   r={geometry.radius}
                   fill="var(--color-ink)"
                   stroke="var(--color-steel)"
                   strokeWidth={1.1}
                 />
                 <text
-                  x={node.x}
-                  y={node.y - 16}
+                  x={point.x}
+                  y={point.y - (mobile ? 18 : 16)}
                   textAnchor="middle"
                   fill="var(--color-faint)"
                   fontWeight={700}
                   style={{
                     fontFamily: "var(--font-sans)",
-                    fontSize: `${geometry.fontSize}px`,
+                    fontSize: `${geometry.fontSize * (mobile ? 1.18 : 1)}px`,
                   }}
                 >
                   {node.label}
@@ -116,7 +146,7 @@ export function KnowledgeGraph() {
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "linear-gradient(to bottom, var(--color-ink) 0%, transparent 10%, transparent 90%, var(--color-ink) 100%)",
+            "linear-gradient(to bottom, var(--color-ink) 0%, transparent 8%, transparent 92%, var(--color-ink) 100%)",
         }}
       />
     </div>

@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useRef, type RefObject } from "react";
-import { GRAPH_VIEWBOX, graphNodes, nodeGeometry } from "@/content/graph";
+import { GRAPH_VIEWBOX, graphNodes, graphPoint, nodeGeometry } from "@/content/graph";
 import { useScrollDriver } from "@/hooks/useScrollDriver";
 import { clamp01, ease, mixHex, progress } from "@/lib/math";
 import { palette } from "@/lib/tokens";
 import { crossingProgress } from "@/lib/viewport";
-import { graphEdgePaths, graphNeighbours } from "./graph-paths";
+import { graphEdgePaths, graphEdgePathsMobile, graphNeighbours } from "./graph-paths";
 
 /** Entrance speed, in progress per frame. */
 const DRAW_RATE = 0.022;
@@ -16,12 +16,15 @@ const APPROACH = 0.18;
 const MAGNET_RADIUS = 175;
 const PICK_RADIUS = 150;
 const SETTLED = 0.004;
-const WIDE = 768;
 /** After the graph has drawn, wait this long then start the idle lesson. */
 const DEMO_WAIT = 900;
 const DEMO_HOLD = 3400;
 /** Hubs the idle tour visits — the two centres plus one downstream. */
 const DEMO_HUBS = [0, 6, 9] as const;
+/** How far ahead of a node the mobile fill starts, in schematic units. */
+const MOBILE_FADE = 170;
+/** Playhead sits here in the viewport — about where a thumb-hold eyes rest. */
+const MOBILE_SCAN = 0.38;
 
 type NodeRefs = {
   group: SVGGElement;
@@ -32,10 +35,20 @@ type NodeRefs = {
 
 type HoverState = { active: number; neighbour: number; magnet: number };
 
+function svgPoint(scene: SVGSVGElement, clientX: number, clientY: number) {
+  const matrix = scene.getScreenCTM();
+  if (!matrix) return null;
+  const point = scene.createSVGPoint();
+  point.x = clientX;
+  point.y = clientY;
+  return point.matrixTransform(matrix.inverse());
+}
+
 export function useKnowledgeGraph(
   container: RefObject<HTMLDivElement | null>,
   svg: RefObject<SVGSVGElement | null>,
   enabled = true,
+  wide = true,
 ) {
   const cache = useRef<{ nodes: NodeRefs[]; edges: SVGPathElement[] } | null>(null);
   const drawn = useRef(0);
@@ -68,19 +81,23 @@ export function useKnowledgeGraph(
     }
 
     const { nodes, edges } = cache.current;
+    const paths = wide ? graphEdgePaths : graphEdgePathsMobile;
     let keepGoing = false;
-    const wide = window.innerWidth >= WIDE;
 
-    // The graph draws itself once, on the way in, then stays put.
-    if (drawn.current < 1 && crossingProgress(root) > 0.12) {
-      drawn.current = Math.min(1, drawn.current + DRAW_RATE);
-      if (drawn.current >= 1) demoAt.current = performance.now() + DEMO_WAIT;
-      if (drawn.current < 1) keepGoing = true;
+    if (wide) {
+      if (drawn.current < 1 && crossingProgress(root) > 0.12) {
+        drawn.current = Math.min(1, drawn.current + DRAW_RATE);
+        if (drawn.current >= 1) demoAt.current = performance.now() + DEMO_WAIT;
+        if (drawn.current < 1) keepGoing = true;
+      }
+    } else {
+      drawn.current = 1;
     }
 
     const entrance = ease(drawn.current);
+    const scan = !wide ? svgPoint(scene, window.innerWidth / 2, window.innerHeight * MOBILE_SCAN) : null;
+    const scanY = scan?.y ?? -9999;
 
-    // Desktop: until someone actually points, the graph plays the lesson itself.
     let selected = active.current;
     if (wide && !touched.current && drawn.current >= 1) {
       const now = performance.now();
@@ -94,37 +111,55 @@ export function useKnowledgeGraph(
       keepGoing = true;
     }
 
-    const { x: px, y: py, inside } = pointer.current;
-    if (inside) {
+    if (!wide && scan) {
       let best = -1;
-      let bestDistance = Infinity;
+      let bestScore = Infinity;
       graphNodes.forEach((node, index) => {
-        const distance = Math.hypot(node.x - px, node.y - py);
-        if (distance < bestDistance) {
-          bestDistance = distance;
+        const y = graphPoint(node, true).y;
+        if (progress(scanY, y - MOBILE_FADE, y + 24) < 0.22) return;
+        const score = Math.abs(y - scanY) - (node.weight === "hub" ? 32 : 0);
+        if (score < bestScore) {
+          bestScore = score;
           best = index;
         }
       });
-      if (bestDistance < PICK_RADIUS) {
-        active.current = best;
-        selected = best;
+      selected = best;
+    } else if (wide) {
+      const { x: px, y: py, inside } = pointer.current;
+      if (inside) {
+        let best = -1;
+        let bestDistance = Infinity;
+        graphNodes.forEach((node, index) => {
+          const distance = Math.hypot(node.x - px, node.y - py);
+          if (distance < bestDistance) {
+            bestDistance = distance;
+            best = index;
+          }
+        });
+        if (bestDistance < PICK_RADIUS) {
+          active.current = best;
+          selected = best;
+        }
       }
     }
 
     const neighbours = selected >= 0 ? graphNeighbours[selected] : [];
     const isNeighbour = new Set(neighbours);
     const teaching = selected >= 0;
+    const { x: px, y: py, inside } = pointer.current;
 
     nodes.forEach((node, index) => {
       const state = hover.current[index];
       const source = graphNodes[index];
       const geometry = nodeGeometry[source.weight];
+      const pos = graphPoint(source, !wide);
 
-      const trigger = (graphNodes[index].x / GRAPH_VIEWBOX.width) * 0.5;
-      const shown = ease(progress(entrance, trigger, trigger + 0.45));
+      const shown = wide
+        ? ease(progress(entrance, (source.x / GRAPH_VIEWBOX.width) * 0.5, (source.x / GRAPH_VIEWBOX.width) * 0.5 + 0.45))
+        : ease(progress(scanY, pos.y - MOBILE_FADE, pos.y + 18));
 
-      const distance = Math.hypot(source.x - px, source.y - py);
-      const raw = inside ? clamp01(1 - distance / MAGNET_RADIUS) : 0;
+      const distance = wide ? Math.hypot(source.x - px, source.y - py) : 0;
+      const raw = wide && inside ? clamp01(1 - distance / MAGNET_RADIUS) : 0;
       const targets = {
         active: index === selected ? 1 : 0,
         neighbour: isNeighbour.has(index) ? 1 : 0,
@@ -137,12 +172,14 @@ export function useKnowledgeGraph(
       }
 
       const related = Math.max(state.active, state.neighbour);
-      const dim = teaching ? 0.14 + related * 0.86 : 1;
+      const trail = !wide && shown > 0.55 ? 0.34 : 0;
+      const dim = teaching ? Math.max(trail, 0.12 + related * 0.88) : 1;
       node.group.style.opacity = (shown * dim).toFixed(3);
 
-      const pull = distance > 0.01 ? state.magnet * 14 : 0;
-      const cx = source.x + ((px - source.x) / (distance || 1)) * pull;
-      const cy = source.y + ((py - source.y) / (distance || 1)) * pull;
+      const pull = wide && distance > 0.01 ? state.magnet * 14 : 0;
+      const cx = pos.x + (wide ? ((px - source.x) / (distance || 1)) * pull : 0);
+      const cy = pos.y + (wide ? ((py - source.y) / (distance || 1)) * pull : 0);
+      const fontScale = wide ? 1 : 1.18;
 
       node.dot.setAttribute("cx", cx.toFixed(2));
       node.dot.setAttribute("cy", cy.toFixed(2));
@@ -163,26 +200,37 @@ export function useKnowledgeGraph(
       node.halo.style.opacity = (state.active * 0.5).toFixed(3);
 
       node.label.setAttribute("x", cx.toFixed(2));
-      node.label.setAttribute("y", (cy - 16).toFixed(2));
+      node.label.setAttribute("y", (cy - (wide ? 16 : 18)).toFixed(2));
       node.label.style.fill = mixHex(
         palette.faint,
         state.neighbour > state.active ? palette.body : palette.light,
         related,
       );
       node.label.style.fontWeight = state.active > 0.5 ? "700" : "400";
-      node.label.style.fontSize = `${(geometry.fontSize + state.active * 2.4).toFixed(2)}px`;
+      node.label.style.fontSize = `${((geometry.fontSize + state.active * 2.4) * fontScale).toFixed(2)}px`;
     });
 
     edges.forEach((edge, index) => {
-      const { a, b } = graphEdgePaths[index];
+      const path = paths[index];
+      edge.setAttribute("d", path.d);
+      const { a, b } = path;
       const target = a === selected || b === selected ? 1 : 0;
       const value = edgeHover.current[index] + (target - edgeHover.current[index]) * APPROACH;
       edgeHover.current[index] = value;
       if (Math.abs(target - value) > SETTLED) keepGoing = true;
 
-      const trigger =
-        0.06 + (Math.min(graphNodes[a].x, graphNodes[b].x) / GRAPH_VIEWBOX.width) * 0.5;
-      const revealed = ease(progress(entrance, trigger, trigger + 0.4));
+      const from = graphPoint(graphNodes[a], !wide);
+      const to = graphPoint(graphNodes[b], !wide);
+      const revealed = wide
+        ? ease(
+            progress(
+              entrance,
+              0.06 + (Math.min(graphNodes[a].x, graphNodes[b].x) / GRAPH_VIEWBOX.width) * 0.5,
+              0.06 + (Math.min(graphNodes[a].x, graphNodes[b].x) / GRAPH_VIEWBOX.width) * 0.5 + 0.4,
+            ),
+          )
+        : ease(progress(scanY, Math.max(from.y, to.y) - MOBILE_FADE, Math.max(from.y, to.y) + 12));
+
       edge.style.strokeDashoffset = (1 - revealed).toFixed(3);
       edge.style.stroke = mixHex(palette.frame, palette.amber, value);
       edge.style.opacity = (revealed * (teaching ? 0.07 + value * 0.93 : 0.45)).toFixed(3);
@@ -195,19 +243,10 @@ export function useKnowledgeGraph(
   useEffect(() => {
     const root = container.current;
     const scene = svg.current;
-    if (!root || !scene || !enabled) return;
-
-    const toLocal = (event: PointerEvent) => {
-      const matrix = scene.getScreenCTM();
-      if (!matrix) return null;
-      const point = scene.createSVGPoint();
-      point.x = event.clientX;
-      point.y = event.clientY;
-      return point.matrixTransform(matrix.inverse());
-    };
+    if (!root || !scene || !enabled || !wide) return;
 
     const onMove = (event: PointerEvent) => {
-      const local = toLocal(event);
+      const local = svgPoint(scene, event.clientX, event.clientY);
       if (!local) return;
       if (!touched.current) {
         touched.current = true;
@@ -228,5 +267,9 @@ export function useKnowledgeGraph(
       root.removeEventListener("pointermove", onMove);
       root.removeEventListener("pointerleave", onLeave);
     };
-  }, [container, svg, request, enabled]);
+  }, [container, svg, request, enabled, wide]);
+
+  useEffect(() => {
+    request();
+  }, [wide, request]);
 }
