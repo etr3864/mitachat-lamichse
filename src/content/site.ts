@@ -14,10 +14,10 @@ export const cta = {
 
 /** Listen chips in the hero. Empty href renders as disabled until the URLs land. */
 export const platforms = [
-  { id: "spotify", label: "ספוטיפיי", href: "" },
-  { id: "apple", label: "אפל פודקאסטס", href: "" },
-  { id: "youtube", label: "יוטיוב", href: "" },
-  { id: "rss", label: "RSS", href: "" },
+  { id: "spotify", label: "ספוטיפיי", short: "ספוטיפיי", href: "" },
+  { id: "apple", label: "אפל פודקאסטס", short: "אפל", href: "" },
+  { id: "youtube", label: "יוטיוב", short: "יוטיוב", href: "" },
+  { id: "rss", label: "RSS", short: "RSS", href: "" },
 ] as const;
 
 /** Fill in the real URLs once the accounts are live; an empty href renders as disabled. */

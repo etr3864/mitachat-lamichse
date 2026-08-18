@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Mono, Miriam_Libre } from "next/font/google";
+import { ScrollReset } from "@/components/layout/ScrollReset";
 import { site } from "@/content/site";
 import { brandVariablesCss, palette } from "@/lib/tokens";
 import "./globals.css";
@@ -44,7 +45,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <style>{brandVariablesCss}</style>
       </head>
-      <body>{children}</body>
+      <body>
+        <ScrollReset />
+        {children}
+      </body>
     </html>
   );
 }

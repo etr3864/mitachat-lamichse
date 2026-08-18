@@ -80,21 +80,22 @@ export function Hero() {
           <p className="hidden text-[17px] leading-snug text-light md:block md:text-[19px]">
             האזינו לפודקאסט
           </p>
-          <ul className="flex flex-wrap items-center justify-center gap-2 md:gap-2.5">
+          <ul className="flex w-full flex-nowrap items-center justify-center gap-1.5 md:w-auto md:gap-2.5">
             {platforms.map((platform) => (
-              <li key={platform.id}>
+              <li key={platform.id} className="min-w-0">
                 <a
                   href={platform.href || undefined}
                   aria-label={`האזינו ב${platform.label}`}
                   aria-disabled={platform.href ? undefined : true}
-                  className={`inline-flex h-9 items-center gap-2 rounded-chip border px-2.5 pr-3 transition-colors md:h-11 md:gap-2.5 md:px-3.5 md:pr-4 ${
+                  className={`inline-flex h-8 max-w-full items-center gap-1.5 rounded-chip border px-2 whitespace-nowrap transition-colors md:h-11 md:gap-2.5 md:px-3.5 md:pr-4 ${
                     platform.href
                       ? "border-amber/70 text-light hover:border-amber hover:text-amber"
                       : "pointer-events-none border-blueprint text-muted"
                   }`}
                 >
-                  <SocialMark id={platform.id} className="size-4 md:size-[18px]" />
-                  <span className="text-[12px] md:text-[13px]">{platform.label}</span>
+                  <SocialMark id={platform.id} className="size-3.5 shrink-0 md:size-[18px]" />
+                  <span className="text-[11px] md:hidden">{platform.short}</span>
+                  <span className="hidden text-[13px] md:inline">{platform.label}</span>
                 </a>
               </li>
             ))}
