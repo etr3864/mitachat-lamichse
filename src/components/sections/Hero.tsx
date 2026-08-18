@@ -48,15 +48,15 @@ export function Hero() {
         }}
       />
 
-      <div className="relative flex min-h-[100svh] flex-col items-center justify-center gap-14 px-6 pt-28 pb-32 text-center md:justify-start md:gap-[76px] md:px-10 md:pt-26">
+      <div className="relative flex min-h-[100svh] flex-col items-center justify-start gap-6 px-6 pt-20 pb-10 text-center md:justify-start md:gap-[76px] md:px-10 md:pt-26 md:pb-32">
         <LogoMark
           strataCount={5}
-          className="h-[clamp(120px,27vh,250px)]"
+          className="h-[72px] [&_g:last-child]:hidden md:h-[clamp(120px,27vh,250px)] md:[&_g:last-child]:block"
           hollowFill="var(--color-ink)"
         />
 
-        <div className="flex flex-col items-center gap-4">
-          <h1 className="text-[clamp(30px,7vw,68px)] leading-[0.96] font-bold tracking-[-0.035em] text-balance whitespace-nowrap">
+        <div className="flex flex-col items-center gap-2 md:gap-4">
+          <h1 className="text-[clamp(26px,7.2vw,34px)] leading-[1.05] font-bold tracking-[-0.035em] text-balance md:text-[clamp(30px,7vw,68px)] md:leading-[0.96] md:whitespace-nowrap">
             {site.name}
           </h1>
           <div className="flex items-center justify-center gap-3.5">
@@ -66,34 +66,35 @@ export function Hero() {
           </div>
         </div>
 
-        <p className="max-w-[44ch] text-[17px] leading-relaxed text-balance text-body md:text-[19px]">
+        <p className="max-w-[44ch] text-[15px] leading-snug text-balance text-body md:text-[19px] md:leading-relaxed">
           {site.mission}
         </p>
 
-        <div className="flex flex-col items-center gap-4">
+        <div className="flex flex-col items-center gap-2.5 md:gap-4">
           <div className="flex items-center gap-3">
             <span className="size-[6px] rounded-full bg-amber" />
             <MonoLabel tone="amber">LISTEN</MonoLabel>
-            <span className="size-[6px] rounded-full bg-amber" />
+            <span className="hidden size-[6px] rounded-full bg-amber md:block" />
+            <span className="text-[14px] leading-snug text-light md:hidden">האזינו לפודקאסט</span>
           </div>
-          <p className="text-[17px] leading-snug text-light md:text-[19px]">
+          <p className="hidden text-[17px] leading-snug text-light md:block md:text-[19px]">
             האזינו לפודקאסט
           </p>
-          <ul className="flex flex-wrap items-center justify-center gap-2.5">
+          <ul className="flex flex-wrap items-center justify-center gap-2 md:gap-2.5">
             {platforms.map((platform) => (
               <li key={platform.id}>
                 <a
                   href={platform.href || undefined}
                   aria-label={`האזינו ב${platform.label}`}
                   aria-disabled={platform.href ? undefined : true}
-                  className={`inline-flex h-11 items-center gap-2.5 rounded-chip border px-3.5 pr-4 transition-colors ${
+                  className={`inline-flex h-9 items-center gap-2 rounded-chip border px-2.5 pr-3 transition-colors md:h-11 md:gap-2.5 md:px-3.5 md:pr-4 ${
                     platform.href
                       ? "border-amber/70 text-light hover:border-amber hover:text-amber"
                       : "pointer-events-none border-blueprint text-muted"
                   }`}
                 >
-                  <SocialMark id={platform.id} className="size-[18px]" />
-                  <span className="text-[13px]">{platform.label}</span>
+                  <SocialMark id={platform.id} className="size-4 md:size-[18px]" />
+                  <span className="text-[12px] md:text-[13px]">{platform.label}</span>
                 </a>
               </li>
             ))}

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { MonoLabel } from "@/components/brand/MonoLabel";
 import { PageFrame } from "@/components/layout/PageFrame";
 import { legalDocs, legalNav, type LegalSlug } from "@/content/legal";
@@ -13,7 +14,7 @@ export function LegalPage({ slug }: { slug: LegalSlug }) {
             {legalNav.map((item) => {
               const current = item.slug === slug;
               return (
-                <a
+                <Link
                   key={item.slug}
                   href={item.href}
                   aria-current={current ? "page" : undefined}
@@ -24,7 +25,7 @@ export function LegalPage({ slug }: { slug: LegalSlug }) {
                   }`}
                 >
                   {item.label}
-                </a>
+                </Link>
               );
             })}
           </nav>

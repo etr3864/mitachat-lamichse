@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { LogoMark } from "@/components/brand/LogoMark";
 import { MonoLabel } from "@/components/brand/MonoLabel";
 import { SocialMark } from "@/components/brand/SocialMark";
@@ -38,9 +39,9 @@ export function SiteFooter() {
           <ul className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-faint">
             {legalNav.map((item) => (
               <li key={item.slug}>
-                <a href={item.href} className="transition-colors hover:text-muted">
+                <Link href={item.href} className="transition-colors hover:text-muted">
                   {item.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
