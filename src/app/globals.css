@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+/*
+ * Values resolve to the `--brand-*` custom properties injected by the root layout
+ * from src/lib/tokens.ts — that file stays the only place a hex code is written.
+ */
+@theme inline {
+  --color-ink: var(--brand-ink);
+  --color-panel: var(--brand-panel);
+  --color-cell: var(--brand-cell);
+
+  --color-hairline: var(--brand-hairline);
+  --color-edge: var(--brand-edge);
+  --color-rule: var(--brand-rule);
+  --color-frame: var(--brand-frame);
+  --color-line: var(--brand-line);
+  --color-blueprint: var(--brand-blueprint);
+  --color-steel: var(--brand-steel);
+  --color-steel-light: var(--brand-steel-light);
+
+  --color-faint: var(--brand-faint);
+  --color-subtle: var(--brand-subtle);
+  --color-dim: var(--brand-dim);
+  --color-muted: var(--brand-muted);
+  --color-body: var(--brand-body);
+  --color-light: var(--brand-light);
+
+  --color-amber: var(--brand-amber);
+  --color-amber-deep: var(--brand-amber-deep);
+  --color-truth: var(--brand-truth);
+
+  --font-sans: var(--font-miriam), system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+
+  --tracking-label: 0.14em;
+  --radius-chip: 2px;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-ink);
+    color: var(--color-light);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Latin metadata (episode codes, timestamps) always reads left-to-right */
+  [data-ltr] {
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
+  ::selection {
+    background-color: var(--color-amber);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 1px solid var(--color-amber);
+    outline-offset: 3px;
+  }
+}
+
+@layer utilities {
+  /* The blueprint grid that sits behind panels and stage sections */
+  .bg-blueprint-grid {
+    background-image:
+      linear-gradient(to left, var(--color-hairline) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--color-hairline) 1px, transparent 1px);
+    background-size: var(--grid-size, 72px) var(--grid-size, 72px);
+  }
+
+  .bg-blueprint-columns {
+    background-image: linear-gradient(to left, color-mix(in srgb, var(--color-light) 2%, transparent) 1px, transparent 1px);
+    background-size: var(--grid-size, 96px) 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
