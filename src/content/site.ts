@@ -16,7 +16,7 @@ export const cta = {
 export const platforms = [
   { id: "spotify", label: "ספוטיפיי", short: "ספוטיפיי", href: "" },
   { id: "apple", label: "אפל פודקאסטס", short: "אפל", href: "" },
-  { id: "youtube", label: "יוטיוב", short: "יוטיוב", href: "" },
+  { id: "youtube", label: "יוטיוב", short: "יוטיוב", href: "https://www.youtube.com/@UTH-Official" },
   { id: "rss", label: "RSS", short: "RSS", href: "" },
 ] as const;
 
@@ -24,7 +24,7 @@ export const platforms = [
 export const socials = [
   { id: "spotify", label: "ספוטיפיי", href: "", kind: "listen" },
   { id: "apple", label: "אפל מיוזיק", href: "", kind: "listen" },
-  { id: "youtube", label: "יוטיוב", href: "", kind: "listen" },
+  { id: "youtube", label: "יוטיוב", href: "https://www.youtube.com/@UTH-Official", kind: "listen" },
   { id: "instagram", label: "אינסטגרם", href: "", kind: "follow" },
   { id: "tiktok", label: "טיקטוק", href: "", kind: "follow" },
   { id: "facebook", label: "פייסבוק", href: "", kind: "follow" },
