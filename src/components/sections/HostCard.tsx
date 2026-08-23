@@ -9,17 +9,20 @@ import { SocialMark } from "@/components/brand/SocialMark";
 import type { Host } from "@/content/hosts";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
+const portraitGlow = {
+  glow: "radial-gradient(100% 92% at 50% 100%, color-mix(in srgb, var(--color-amber) 36%, transparent) 0%, transparent 64%)",
+  floor: "radial-gradient(ellipse 72% 100% at 50% 50%, color-mix(in srgb, var(--color-amber) 42%, transparent) 0%, transparent 70%)",
+} as const;
+
 const moodStyles = {
   steel: {
-    glow: "radial-gradient(100% 90% at 50% 100%, color-mix(in srgb, var(--color-steel) 34%, transparent) 0%, transparent 62%)",
-    floor: "radial-gradient(ellipse 72% 100% at 50% 50%, color-mix(in srgb, var(--color-steel-light) 28%, transparent) 0%, transparent 70%)",
+    ...portraitGlow,
     openBorder: "border-steel-light/45",
     stratum: "bg-steel-light/35",
     node: "border-steel-light/50",
   },
   warm: {
-    glow: "radial-gradient(100% 92% at 50% 100%, color-mix(in srgb, var(--color-amber) 36%, transparent) 0%, transparent 64%)",
-    floor: "radial-gradient(ellipse 72% 100% at 50% 50%, color-mix(in srgb, var(--color-amber) 42%, transparent) 0%, transparent 70%)",
+    ...portraitGlow,
     openBorder: "border-amber/55",
     stratum: "bg-amber/40",
     node: "border-amber/45",
