@@ -31,7 +31,7 @@ export function HoodSeam() {
   }, !reduced);
 
   return (
-    <div ref={seam} className="relative px-6 md:px-10" aria-hidden="true">
+    <div ref={seam} className="relative overflow-x-clip px-6 md:px-10" aria-hidden="true">
       <div className="flex h-[120px] items-center">
         <span className="h-px flex-1 bg-frame" />
         <span

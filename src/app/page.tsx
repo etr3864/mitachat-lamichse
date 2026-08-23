@@ -9,7 +9,7 @@ import { MethodStage } from "@/components/sections/method/MethodStage";
 export default function HomePage() {
   return (
     <PageFrame>
-      <main>
+      <main className="overflow-x-clip">
         <Hero />
         <HoodSeam />
         <MethodStage />

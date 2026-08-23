@@ -8,7 +8,7 @@ const sizes: Record<
   { mark: number; variant: "stack" | "bar"; strata: 3 | 4 | 5; text: string; gap: string }
 > = {
   sm: { mark: 19, variant: "bar", strata: 3, text: "text-[15px]", gap: "gap-3" },
-  md: { mark: 21, variant: "bar", strata: 3, text: "text-[17px]", gap: "gap-3.5" },
+  md: { mark: 21, variant: "bar", strata: 3, text: "text-[15px] sm:text-[17px]", gap: "gap-3 sm:gap-3.5" },
   lg: { mark: 72, variant: "stack", strata: 5, text: "text-[40px]", gap: "gap-6" },
 };
 
@@ -24,7 +24,7 @@ export function Lockup({
   const config = sizes[size];
 
   return (
-    <div className={`flex items-center ${config.gap}`}>
+    <div className={`flex min-w-0 items-center ${config.gap}`}>
       <LogoMark
         height={config.mark}
         variant={config.variant}
@@ -32,9 +32,9 @@ export function Lockup({
         hollowFill={hollowFill}
         className="flex-none"
       />
-      <div className="flex flex-col items-center gap-2.5">
+      <div className="flex min-w-0 flex-col items-center gap-2.5">
         <span
-          className={`${config.text} leading-none font-bold tracking-[-0.022em] whitespace-nowrap`}
+          className={`${config.text} max-w-full leading-none font-bold tracking-[-0.022em] text-balance sm:whitespace-nowrap`}
         >
           {site.name}
         </span>
