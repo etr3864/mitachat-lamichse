@@ -51,22 +51,6 @@ const icons: Record<SocialMarkId, ReactNode> = {
       <path d="M7.6 15.5c1.6-.7 3.4-.7 5 0" />
     </>
   ),
-  apple: (
-    <>
-      <circle cx="12" cy="12" r="8.1" />
-      <circle cx="9.6" cy="15.6" r="2" />
-      <path d="M11.6 16.2V8.4" />
-      <path d="M11.6 8.4c1.6.4 3.4 1.6 4.4 2.2" />
-    </>
-  ),
-  rss: (
-    <>
-      <path d={frame} />
-      <circle cx="8.4" cy="15.6" r="1.05" />
-      <path d="M8.2 11.4c2.4 0 4.4 2 4.4 4.4" />
-      <path d="M8.2 8.2c4.2 0 7.6 3.4 7.6 7.6" />
-    </>
-  ),
 };
 
 export function SocialMark({
