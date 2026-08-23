@@ -80,6 +80,17 @@
     background-image: linear-gradient(to left, color-mix(in srgb, var(--color-light) 2%, transparent) 1px, transparent 1px);
     background-size: var(--grid-size, 96px) 100%;
   }
+
+  /* Soft vignette on host cutouts — hides hard crop lines at the frame edge */
+  .host-portrait-mask {
+    -webkit-mask-image: radial-gradient(ellipse 86% 90% at 50% 84%, #000 56%, transparent 100%);
+    mask-image: radial-gradient(ellipse 86% 90% at 50% 84%, #000 56%, transparent 100%);
+  }
+
+  .host-portrait-mask-wide {
+    -webkit-mask-image: radial-gradient(ellipse 68% 88% at 50% 78%, #000 48%, transparent 100%);
+    mask-image: radial-gradient(ellipse 68% 88% at 50% 78%, #000 48%, transparent 100%);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

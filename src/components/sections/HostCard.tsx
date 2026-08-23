@@ -10,11 +10,13 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 const moodStyles = {
   steel: {
     glow: "radial-gradient(90% 80% at 50% 88%, color-mix(in srgb, var(--color-steel) 28%, transparent) 0%, transparent 68%)",
+    floor: "radial-gradient(ellipse 80% 100% at 50% 50%, color-mix(in srgb, var(--color-steel) 35%, transparent) 0%, transparent 72%)",
     ring: "group-hover:border-steel-light/60",
     openBorder: "border-steel-light/40",
   },
   warm: {
     glow: "radial-gradient(95% 85% at 50% 82%, color-mix(in srgb, var(--color-amber) 32%, transparent) 0%, transparent 70%)",
+    floor: "radial-gradient(ellipse 80% 100% at 50% 50%, color-mix(in srgb, var(--color-amber) 40%, transparent) 0%, transparent 72%)",
     ring: "group-hover:border-amber/70",
     openBorder: "border-amber/50",
   },
@@ -25,6 +27,8 @@ export function HostCard({ host }: { host: Host }) {
   const reduced = useReducedMotion();
   const panelId = useId();
   const mood = moodStyles[host.mood];
+  const scale = host.portrait?.scale ?? 1;
+  const wide = host.portrait?.wide ?? false;
 
   return (
     <article
@@ -39,7 +43,7 @@ export function HostCard({ host }: { host: Host }) {
         onClick={() => setOpen((value) => !value)}
         className="group flex w-full flex-col text-right outline-none"
       >
-        <div className="relative h-[280px] overflow-hidden border-b border-rule md:h-[320px]">
+        <div className="relative h-[300px] overflow-hidden border-b border-rule md:h-[360px]">
           <div aria-hidden="true" className="absolute inset-0 bg-blueprint-grid opacity-40" />
           <div
             aria-hidden="true"
@@ -51,24 +55,39 @@ export function HostCard({ host }: { host: Host }) {
           />
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-panel to-transparent"
+            className="pointer-events-none absolute inset-x-[12%] bottom-6 h-16 opacity-70 blur-2xl transition-opacity duration-500 group-hover:opacity-100 md:bottom-8 md:h-20"
+            style={{ background: mood.floor }}
           />
 
           <div
-            className={`absolute inset-x-0 bottom-0 flex justify-center px-4 transition-transform duration-500 ease-out ${
-              reduced ? "" : "group-hover:-translate-y-1.5"
-            } ${open && !reduced ? "-translate-y-2 scale-[1.02]" : ""}`}
+            className={`absolute inset-x-0 bottom-0 flex h-[92%] items-end justify-center overflow-hidden transition-transform duration-500 ease-out ${
+              reduced ? "" : "group-hover:-translate-y-1"
+            } ${open && !reduced ? "-translate-y-2" : ""}`}
           >
-            <Image
-              src={host.image}
-              alt={host.title}
-              width={420}
-              height={560}
-              sizes="(max-width: 768px) 80vw, 360px"
-              className="h-[min(248px,62vw)] w-auto max-w-full object-contain object-bottom drop-shadow-[0_18px_40px_rgba(0,0,0,0.55)]"
-              priority={host.id === "doron"}
-            />
+            <div
+              className={`flex h-full items-end justify-center ${wide ? "host-portrait-mask-wide" : "host-portrait-mask"}`}
+              style={{ transform: `scale(${scale})`, transformOrigin: "50% 100%" }}
+            >
+              <Image
+                src={host.image}
+                alt={host.title}
+                width={420}
+                height={560}
+                sizes="(max-width: 768px) 85vw, 400px"
+                className="h-[min(280px,74vw)] w-auto max-w-none object-contain object-bottom drop-shadow-[0_22px_48px_rgba(0,0,0,0.6)] md:h-[min(320px,42vw)]"
+                priority={host.id === "doron"}
+              />
+            </div>
           </div>
+
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-panel via-panel/90 to-transparent"
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-edge to-transparent"
+          />
 
           <div
             aria-hidden="true"

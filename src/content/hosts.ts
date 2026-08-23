@@ -18,6 +18,8 @@ export type Host = {
   bio: string;
   /** Cool steel for Doron, warm amber for Eitan. */
   mood: "steel" | "warm";
+  /** Frame tuning — wide crops need scale + soft mask so edges do not read as amputated. */
+  portrait?: { scale?: number; wide?: boolean };
   socials: HostSocial[];
 };
 
@@ -31,6 +33,7 @@ export const hosts: Host[] = [
     tagline: "הצד הטכני — מה באמת רץ מתחת למכסה",
     bio: "דורון מפרק טענות לחלקים שאפשר לבדוק. כשמשהו נשמע יותר מדי נקי, הוא זה שמוציא את המפתח.",
     mood: "steel",
+    portrait: { scale: 1.1, wide: true },
     socials: [
       { id: "facebook", label: "פייסבוק", href: "" },
       { id: "instagram", label: "אינסטגרם", href: "" },
@@ -47,6 +50,7 @@ export const hosts: Host[] = [
     tagline: "הצד הסקרן — שואל את השאלה שלא נוח לשאול",
     bio: "איתן מכניס את השאלה שמחזיקה את הפרק. לא מספיק שזה עובד — צריך להבין למה, ולמי זה משנה.",
     mood: "warm",
+    portrait: { scale: 1.2, wide: true },
     socials: [
       { id: "facebook", label: "פייסבוק", href: "" },
       { id: "instagram", label: "אינסטגרם", href: "" },
