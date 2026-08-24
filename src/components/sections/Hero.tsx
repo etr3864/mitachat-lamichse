@@ -39,8 +39,8 @@ export function Hero() {
             className="pointer-events-none absolute -inset-x-8 -inset-y-9 z-0 md:-inset-x-16 md:-inset-y-12"
             style={{
               background: [
-                "radial-gradient(ellipse 52% 46% at 50% 42%, color-mix(in srgb, var(--color-ink) 92%, transparent) 0%, color-mix(in srgb, var(--color-ink) 68%, transparent) 38%, transparent 72%)",
-                "radial-gradient(ellipse 84% 78% at 50% 44%, color-mix(in srgb, var(--color-ink) 78%, transparent) 0%, color-mix(in srgb, var(--color-ink) 46%, transparent) 34%, color-mix(in srgb, var(--color-ink) 18%, transparent) 52%, transparent 70%)",
+                "radial-gradient(ellipse 54% 58% at 50% 46%, color-mix(in srgb, var(--color-ink) 92%, transparent) 0%, color-mix(in srgb, var(--color-ink) 68%, transparent) 38%, transparent 72%)",
+                "radial-gradient(ellipse 88% 96% at 50% 50%, color-mix(in srgb, var(--color-ink) 78%, transparent) 0%, color-mix(in srgb, var(--color-ink) 46%, transparent) 34%, color-mix(in srgb, var(--color-ink) 18%, transparent) 52%, transparent 72%)",
               ].join(", "),
             }}
           />
@@ -62,9 +62,21 @@ export function Hero() {
             </div>
           </div>
 
-          <p className="hero-copy-shadow relative z-[1] max-w-[44ch] text-[16px] leading-snug text-balance text-body md:text-[19px] md:leading-relaxed">
-            {site.mission}
-          </p>
+          <div className="relative z-[1] w-full max-w-[44ch]">
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute -inset-x-7 -inset-y-5 md:-inset-x-10 md:-inset-y-6"
+              style={{
+                background: [
+                  "radial-gradient(ellipse 72% 68% at 50% 50%, color-mix(in srgb, var(--color-ink) 90%, transparent) 0%, color-mix(in srgb, var(--color-ink) 62%, transparent) 36%, transparent 70%)",
+                  "radial-gradient(ellipse 96% 88% at 50% 52%, color-mix(in srgb, var(--color-ink) 72%, transparent) 0%, color-mix(in srgb, var(--color-ink) 38%, transparent) 42%, transparent 74%)",
+                ].join(", "),
+              }}
+            />
+            <p className="hero-copy-shadow relative text-[16px] leading-snug text-balance text-body md:text-[19px] md:leading-relaxed">
+              {site.mission}
+            </p>
+          </div>
         </div>
 
         <div className="flex flex-col items-center gap-2.5 md:gap-4">
