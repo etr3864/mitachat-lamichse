@@ -6,7 +6,13 @@ import { HoodSeam } from "@/components/sections/HoodSeam";
 import { KnowledgeGraph } from "@/components/sections/graph/KnowledgeGraph";
 import { MethodStage } from "@/components/sections/method/MethodStage";
 
-export default function HomePage() {
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ sent?: string }>;
+}) {
+  const { sent } = await searchParams;
+
   return (
     <PageFrame>
       <main>
@@ -15,7 +21,7 @@ export default function HomePage() {
         <MethodStage />
         <KnowledgeGraph />
         <About />
-        <Contact />
+        <Contact sent={sent === "1"} />
       </main>
     </PageFrame>
   );

@@ -35,5 +35,7 @@ export type SocialMarkId = SocialId | PlatformId;
 export const contact = {
   heading: "יש משהו שאתם רוצים שנדבר עליו לעומק?",
   body: "תרשמו לנו ונצלול אל מתחת למכסה המנוע של הנושא שלכם בפודקאסט הבא:",
-  email: "hello@mitachat-lamichse.com",
+  email: "etantur@gmail.com",
+  /** FormSubmit endpoint — delivers contact ideas to the inbox above. */
+  formAction: "https://formsubmit.co/etantur@gmail.com",
 } as const;

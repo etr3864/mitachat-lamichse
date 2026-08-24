@@ -1,9 +1,11 @@
 import { MonoLabel } from "@/components/brand/MonoLabel";
 import { SeamRule } from "@/components/brand/SeamRule";
 import { Container } from "@/components/layout/Container";
-import { contact } from "@/content/site";
+import { contact, site } from "@/content/site";
 
-export function Contact() {
+export function Contact({ sent = false }: { sent?: boolean }) {
+  const nextUrl = `${site.url}/?sent=1#contact`;
+
   return (
     <Container as="section" id="contact" className="pb-28 md:pb-36">
       <div className="border border-frame bg-panel">
@@ -25,19 +27,36 @@ export function Contact() {
             </div>
 
             <div className="flex w-full max-w-[560px] flex-col gap-6">
+              {sent ? (
+                <p
+                  role="status"
+                  className="rounded-chip border border-amber/50 bg-ink/40 px-5 py-4 text-[15px] leading-relaxed text-light"
+                >
+                  קיבלנו. תודה, נחזור אליכם אם נצלול לזה.
+                </p>
+              ) : null}
+
               <form
-                action={`mailto:${contact.email}`}
+                action={contact.formAction}
                 method="post"
-                encType="text/plain"
                 className="flex flex-col gap-3 sm:flex-row"
               >
+                <input type="hidden" name="_subject" value={`רעיון לפודקאסט · ${site.name}`} />
+                <input type="hidden" name="_next" value={nextUrl} />
+                <input type="hidden" name="_template" value="table" />
+                <input type="hidden" name="_captcha" value="false" />
+                <input type="text" name="_gotcha" className="hidden" tabIndex={-1} autoComplete="off" />
+
                 <label htmlFor="contact-topic" className="sr-only">
                   מה תרצו שנצלול אליו?
                 </label>
                 <input
                   id="contact-topic"
-                  name="body"
+                  name="message"
                   type="text"
+                  required
+                  minLength={3}
+                  maxLength={500}
                   placeholder="מה תרצו שנצלול אליו?"
                   className="min-w-0 flex-1 rounded-chip border border-blueprint bg-panel px-5 py-3 text-[15px] text-light outline-none transition-colors placeholder:text-faint focus:border-amber"
                 />
