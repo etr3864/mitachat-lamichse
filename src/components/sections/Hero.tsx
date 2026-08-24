@@ -22,7 +22,7 @@ export function Hero() {
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-y-0 left-1/2 w-[min(720px,94vw)] -translate-x-1/2 md:w-[min(720px,54vw)]"
+        className="pointer-events-none absolute inset-y-0 left-1/2 w-[min(720px,94vw)] -translate-x-1/2 opacity-70 md:w-[min(720px,54vw)] md:opacity-100"
         style={{
           background:
             "radial-gradient(60% 52% at 50% 34%, color-mix(in srgb, var(--color-ink) 94%, transparent) 0%, color-mix(in srgb, var(--color-ink) 74%, transparent) 44%, transparent 100%)",
@@ -48,27 +48,38 @@ export function Hero() {
         }}
       />
 
-      <div className="relative flex min-h-[100svh] flex-col items-center justify-start gap-6 px-6 pt-16 pb-8 text-center md:justify-start md:gap-[76px] md:px-10 md:pt-26 md:pb-32">
-        <LogoMark
-          strataCount={5}
-          className="h-[72px] [&_g:last-child]:hidden md:h-[clamp(120px,27vh,250px)] md:[&_g:last-child]:block"
-          hollowFill="var(--color-ink)"
-        />
+      <div className="relative flex min-h-[100svh] flex-col items-center justify-start gap-7 px-6 pt-16 pb-8 text-center md:gap-[76px] md:px-10 md:pt-26 md:pb-32">
+        <div className="relative flex w-full max-w-[34rem] flex-col items-center gap-6 md:max-w-none md:gap-[76px]">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -inset-x-3 -inset-y-5 rounded-[2px] md:hidden"
+            style={{
+              background:
+                "radial-gradient(ellipse 96% 88% at 50% 46%, color-mix(in srgb, var(--color-ink) 78%, transparent) 0%, color-mix(in srgb, var(--color-ink) 52%, transparent) 48%, transparent 82%)",
+            }}
+          />
 
-        <div className="flex flex-col items-center gap-2 md:gap-4">
-          <h1 className="text-[clamp(26px,7.2vw,34px)] leading-[1.05] font-bold tracking-[-0.035em] text-balance md:text-[clamp(30px,7vw,68px)] md:leading-[0.96] md:whitespace-nowrap">
-            {site.name}
-          </h1>
-          <div className="flex items-center justify-center gap-3.5">
-            <span className="h-px w-6 bg-blueprint sm:w-10" />
-            <span className="text-[13px] text-muted sm:text-[15px]">{site.tagline}</span>
-            <span className="h-px w-6 bg-blueprint sm:w-10" />
+          <LogoMark
+            strataCount={5}
+            className="relative h-[92px] [&_g:last-child]:hidden md:h-[clamp(120px,27vh,250px)] md:[&_g:last-child]:block"
+            hollowFill="var(--color-ink)"
+          />
+
+          <div className="relative flex flex-col items-center gap-2.5 md:gap-4">
+            <h1 className="text-[clamp(30px,8.4vw,38px)] leading-[1.04] font-bold tracking-[-0.035em] text-balance md:text-[clamp(30px,7vw,68px)] md:leading-[0.96] md:whitespace-nowrap">
+              {site.name}
+            </h1>
+            <div className="flex items-center justify-center gap-3.5">
+              <span className="h-px w-6 bg-blueprint sm:w-10" />
+              <span className="text-[14px] text-muted sm:text-[15px]">{site.tagline}</span>
+              <span className="h-px w-6 bg-blueprint sm:w-10" />
+            </div>
           </div>
-        </div>
 
-        <p className="max-w-[44ch] text-[15px] leading-snug text-balance text-body md:text-[19px] md:leading-relaxed">
-          {site.mission}
-        </p>
+          <p className="relative max-w-[44ch] text-[16px] leading-snug text-balance text-body md:text-[19px] md:leading-relaxed">
+            {site.mission}
+          </p>
+        </div>
 
         <div className="flex flex-col items-center gap-2.5 md:gap-4">
           <div className="flex items-center gap-3">

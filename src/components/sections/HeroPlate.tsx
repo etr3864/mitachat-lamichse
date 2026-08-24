@@ -11,7 +11,7 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
  * and only centre the frame once there is width to hold all of it.
  */
 const PLATE_FIT =
-  "size-full object-cover object-[78%_50%] brightness-[0.8] contrast-[1.08] md:object-center";
+  "size-full object-cover object-[78%_50%] brightness-[0.92] contrast-[1.05] md:object-center md:brightness-[0.8] md:contrast-[1.08]";
 
 /**
  * The plate loop: a glass table shot from underneath, running full-bleed behind
