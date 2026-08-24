@@ -89,6 +89,31 @@
       0 1px 3px color-mix(in srgb, var(--color-ink) 68%, transparent);
   }
 
+  /* Soft blurred inverse spots — reads as light falloff, not a tinted box */
+  .hero-spotlight {
+    filter: blur(26px);
+    transform: scale(1.12);
+  }
+
+  @media (min-width: 768px) {
+    .hero-spotlight {
+      filter: blur(32px);
+      transform: scale(1.1);
+    }
+  }
+
+  .hero-chip-shadow {
+    box-shadow:
+      0 0 24px color-mix(in srgb, var(--color-ink) 82%, transparent),
+      0 0 8px color-mix(in srgb, var(--color-ink) 55%, transparent);
+  }
+
+  @media (min-width: 768px) {
+    .hero-chip-shadow {
+      box-shadow: none;
+    }
+  }
+
   /* Long multi-stop fade — bottom and sides stay soft, top stays fully open */
   .host-portrait-mask {
     -webkit-mask-image:

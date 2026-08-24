@@ -13,7 +13,7 @@ export function Hero() {
 
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-blueprint-columns opacity-40"
+        className="pointer-events-none absolute inset-0 bg-blueprint-columns opacity-20 md:opacity-30"
         style={{ ["--grid-size" as string]: "96px" }}
       />
       {/*
@@ -33,14 +33,15 @@ export function Hero() {
 
       <div className="relative flex min-h-[100svh] flex-col items-center justify-start gap-7 px-6 pt-16 pb-8 text-center md:gap-[76px] md:px-10 md:pt-26 md:pb-32">
         <div className="relative flex w-full max-w-[34rem] flex-col items-center gap-6 md:max-w-none md:gap-[76px]">
-          {/* Inverse spotlight: dark core + soft falloff, lockup only */}
+          {/* Blurred inverse spots — no hard box edges */}
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute -inset-x-8 -inset-y-9 z-0 md:-inset-x-16 md:-inset-y-12"
+            className="hero-spotlight pointer-events-none absolute inset-0 z-0"
             style={{
               background: [
-                "radial-gradient(ellipse 54% 58% at 50% 46%, color-mix(in srgb, var(--color-ink) 92%, transparent) 0%, color-mix(in srgb, var(--color-ink) 68%, transparent) 38%, transparent 72%)",
-                "radial-gradient(ellipse 88% 96% at 50% 50%, color-mix(in srgb, var(--color-ink) 78%, transparent) 0%, color-mix(in srgb, var(--color-ink) 46%, transparent) 34%, color-mix(in srgb, var(--color-ink) 18%, transparent) 52%, transparent 72%)",
+                "radial-gradient(ellipse 46% 38% at 50% 16%, color-mix(in srgb, var(--color-ink) 88%, transparent) 0%, transparent 68%)",
+                "radial-gradient(ellipse 62% 34% at 50% 44%, color-mix(in srgb, var(--color-ink) 90%, transparent) 0%, transparent 66%)",
+                "radial-gradient(ellipse 68% 40% at 50% 78%, color-mix(in srgb, var(--color-ink) 86%, transparent) 0%, transparent 68%)",
               ].join(", "),
             }}
           />
@@ -62,53 +63,54 @@ export function Hero() {
             </div>
           </div>
 
-          <div className="relative z-[1] w-full max-w-[44ch]">
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute -inset-x-7 -inset-y-5 md:-inset-x-10 md:-inset-y-6"
-              style={{
-                background: [
-                  "radial-gradient(ellipse 72% 68% at 50% 50%, color-mix(in srgb, var(--color-ink) 90%, transparent) 0%, color-mix(in srgb, var(--color-ink) 62%, transparent) 36%, transparent 70%)",
-                  "radial-gradient(ellipse 96% 88% at 50% 52%, color-mix(in srgb, var(--color-ink) 72%, transparent) 0%, color-mix(in srgb, var(--color-ink) 38%, transparent) 42%, transparent 74%)",
-                ].join(", "),
-              }}
-            />
-            <p className="hero-copy-shadow relative text-[16px] leading-snug text-balance text-body md:text-[19px] md:leading-relaxed">
-              {site.mission}
-            </p>
-          </div>
+          <p className="hero-copy-shadow relative z-[1] max-w-[44ch] text-[16px] leading-snug text-balance text-body md:text-[19px] md:leading-relaxed">
+            {site.mission}
+          </p>
         </div>
 
-        <div className="flex flex-col items-center gap-2.5 md:gap-4">
-          <div className="flex items-center gap-3">
-            <span className="size-[6px] rounded-full bg-amber" />
-            <MonoLabel tone="amber">LISTEN</MonoLabel>
-            <span className="hidden size-[6px] rounded-full bg-amber md:block" />
-            <span className="text-[14px] leading-snug text-light md:hidden">האזינו לפודקאסט</span>
+        <div className="relative flex w-full max-w-[34rem] flex-col items-center gap-2.5 md:max-w-none md:gap-4">
+          <div
+            aria-hidden="true"
+            className="hero-spotlight pointer-events-none absolute inset-0 z-0 md:hidden"
+            style={{
+              background:
+                "radial-gradient(ellipse 92% 88% at 50% 62%, color-mix(in srgb, var(--color-ink) 80%, transparent) 0%, color-mix(in srgb, var(--color-ink) 42%, transparent) 42%, transparent 72%)",
+            }}
+          />
+
+          <div className="relative z-[1] flex flex-col items-center gap-2.5 md:gap-4">
+            <div className="flex items-center gap-3">
+              <span className="size-[6px] rounded-full bg-amber" />
+              <MonoLabel tone="amber">LISTEN</MonoLabel>
+              <span className="hidden size-[6px] rounded-full bg-amber md:block" />
+              <span className="hero-copy-shadow text-[14px] leading-snug text-light md:hidden">
+                האזינו לפודקאסט
+              </span>
+            </div>
+            <p className="hidden text-[17px] leading-snug text-light md:block md:text-[19px]">
+              האזינו לפודקאסט
+            </p>
+            <ul className="flex w-full flex-nowrap items-center justify-center gap-1.5 md:w-auto md:gap-2.5">
+              {platforms.map((platform) => (
+                <li key={platform.id} className="min-w-0">
+                  <a
+                    href={platform.href || undefined}
+                    aria-label={`האזינו ב${platform.label}`}
+                    aria-disabled={platform.href ? undefined : true}
+                    className={`hero-chip-shadow inline-flex h-8 max-w-full items-center gap-1.5 rounded-chip border px-2 whitespace-nowrap transition-colors md:h-11 md:gap-2.5 md:px-3.5 md:pr-4 ${
+                      platform.href
+                        ? "border-amber/70 text-light hover:border-amber hover:text-amber"
+                        : "pointer-events-none border-blueprint text-muted"
+                    }`}
+                  >
+                    <SocialMark id={platform.id} className="size-3.5 shrink-0 md:size-[18px]" />
+                    <span className="text-[11px] md:hidden">{platform.short}</span>
+                    <span className="hidden text-[13px] md:inline">{platform.label}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
-          <p className="hidden text-[17px] leading-snug text-light md:block md:text-[19px]">
-            האזינו לפודקאסט
-          </p>
-          <ul className="flex w-full flex-nowrap items-center justify-center gap-1.5 md:w-auto md:gap-2.5">
-            {platforms.map((platform) => (
-              <li key={platform.id} className="min-w-0">
-                <a
-                  href={platform.href || undefined}
-                  aria-label={`האזינו ב${platform.label}`}
-                  aria-disabled={platform.href ? undefined : true}
-                  className={`inline-flex h-8 max-w-full items-center gap-1.5 rounded-chip border px-2 whitespace-nowrap transition-colors md:h-11 md:gap-2.5 md:px-3.5 md:pr-4 ${
-                    platform.href
-                      ? "border-amber/70 text-light hover:border-amber hover:text-amber"
-                      : "pointer-events-none border-blueprint text-muted"
-                  }`}
-                >
-                  <SocialMark id={platform.id} className="size-3.5 shrink-0 md:size-[18px]" />
-                  <span className="text-[11px] md:hidden">{platform.short}</span>
-                  <span className="hidden text-[13px] md:inline">{platform.label}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
         </div>
       </div>
     </section>
