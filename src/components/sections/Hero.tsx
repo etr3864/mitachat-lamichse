@@ -33,19 +33,21 @@ export function Hero() {
 
       <div className="relative flex min-h-[100svh] flex-col items-center justify-start gap-7 px-6 pt-16 pb-8 text-center md:gap-[76px] md:px-10 md:pt-26 md:pb-32">
         <div className="relative flex w-full max-w-[34rem] flex-col items-center gap-6 md:max-w-none md:gap-[76px]">
-          {/* Soft spot behind lockup only — plate stays visible everywhere else */}
+          {/* Inverse spotlight: dark core + soft falloff, lockup only */}
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute -inset-x-6 -inset-y-7 z-0 md:-inset-x-14 md:-inset-y-10"
+            className="pointer-events-none absolute -inset-x-8 -inset-y-9 z-0 md:-inset-x-16 md:-inset-y-12"
             style={{
-              background:
-                "radial-gradient(ellipse 78% 72% at 50% 44%, color-mix(in srgb, var(--color-ink) 62%, transparent) 0%, color-mix(in srgb, var(--color-ink) 34%, transparent) 36%, color-mix(in srgb, var(--color-ink) 12%, transparent) 54%, transparent 68%)",
+              background: [
+                "radial-gradient(ellipse 52% 46% at 50% 42%, color-mix(in srgb, var(--color-ink) 92%, transparent) 0%, color-mix(in srgb, var(--color-ink) 68%, transparent) 38%, transparent 72%)",
+                "radial-gradient(ellipse 84% 78% at 50% 44%, color-mix(in srgb, var(--color-ink) 78%, transparent) 0%, color-mix(in srgb, var(--color-ink) 46%, transparent) 34%, color-mix(in srgb, var(--color-ink) 18%, transparent) 52%, transparent 70%)",
+              ].join(", "),
             }}
           />
 
           <LogoMark
             strataCount={5}
-            className="relative z-[1] h-[92px] drop-shadow-[0_0_28px_color-mix(in_srgb,var(--color-ink)_72%,transparent)] md:h-[clamp(120px,27vh,250px)] [&_g:last-child]:hidden md:[&_g:last-child]:block"
+            className="relative z-[1] h-[92px] drop-shadow-[0_0_36px_color-mix(in_srgb,var(--color-ink)_88%,transparent)_0_0_12px_color-mix(in_srgb,var(--color-ink)_70%,transparent)] md:h-[clamp(120px,27vh,250px)] [&_g:last-child]:hidden md:[&_g:last-child]:block"
             hollowFill="var(--color-ink)"
           />
 

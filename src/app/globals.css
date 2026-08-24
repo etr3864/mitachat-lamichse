@@ -84,8 +84,9 @@
   /* Hero lockup: halo for legibility without dimming the whole plate */
   .hero-copy-shadow {
     text-shadow:
-      0 0 32px color-mix(in srgb, var(--color-ink) 80%, transparent),
-      0 1px 2px color-mix(in srgb, var(--color-ink) 55%, transparent);
+      0 0 48px color-mix(in srgb, var(--color-ink) 92%, transparent),
+      0 0 14px color-mix(in srgb, var(--color-ink) 78%, transparent),
+      0 1px 3px color-mix(in srgb, var(--color-ink) 68%, transparent);
   }
 
   /* Long multi-stop fade — bottom and sides stay soft, top stays fully open */
